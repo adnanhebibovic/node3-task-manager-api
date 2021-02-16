@@ -31,7 +31,7 @@ router.post('/users', async (req, res) => {
         res.send({ user, token })
     } catch (error) {
         res.status(400)
-        res.send(error)
+        res.send()
     }
 })
 
@@ -41,11 +41,10 @@ router.post('/users/login', async (req, res) => {
         const token = await login.generate(user._id)
         user.tokens = user.tokens.concat({token})
         await user.save()
-
         res.send({ user, token })
     } catch (error) { 
         res.status(400)
-        res.send(error)        
+        res.send()        
     }
 })
 
@@ -59,7 +58,7 @@ router.post('/users/logout', login.authorize, async (req, res) => {
        res.send()
     } catch (error) { 
         res.status(400)
-        res.send(error)        
+        res.send()        
     }
 })
 
@@ -71,7 +70,7 @@ router.post('/users/logout/all', login.authorize, async (req, res) => {
        res.send()
     } catch (error) { 
         res.status(400)
-        res.send(error)        
+        res.send()        
     }
 })
 
@@ -80,21 +79,25 @@ router.get('/users/me', login.authorize, async (req, res) => {
         res.send(req.user)
     } catch (error) {
         res.status(500)
-        res.send(error)
+        res.send()
     }
 })
 
 router.patch('/users/me', login.authorize, async (req, res) => {
     try {
         const keys = Object.keys(req.body)
-        keys.forEach((index) => {
-            req.user[index] = req.body[index]
+        const props = Object.keys(User.schema.paths)
+
+        keys.forEach((key) => {
+            if (!props.includes(key))
+                throw Error()
+            req.user[key] = req.body[key]
         })
         await req.user.save()
         res.send(req.user)
     } catch (error) {
         res.status(500)
-        res.send(error)
+        res.send()
     }
 })
 
@@ -105,7 +108,7 @@ router.delete('/users/me', login.authorize, async (req, res) => {
         res.send(req.user)
     } catch (error) {
         res.status(500)
-        res.send(error)
+        res.send()
     }
 })
 

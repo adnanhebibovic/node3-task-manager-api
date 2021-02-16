@@ -10,14 +10,7 @@ const sendWelcomeEmail = (email) => {
         text: 'Welcome to the task-manager, please let me know how you get along!',
       }
     
-    sgMail
-    .send(msg)
-    .then(() => {
-        console.log('Welcome email sent')
-    })
-    .catch((error) => {
-        console.error(error)
-    })
+    sgMail.send(msg)
 }
 
 const sendCancelationEmail = (email) => {
@@ -28,14 +21,7 @@ const sendCancelationEmail = (email) => {
         text: 'Goodbye, I hope to see you some time soon!',
       }
     
-    sgMail
-    .send(msg)
-    .then(() => {
-        console.log('Welcome email sent')
-    })
-    .catch((error) => {
-        console.error(error)
-    })
+    sgMail.send(msg)
 } 
 
 module.exports = {
